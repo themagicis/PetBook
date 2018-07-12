@@ -8,12 +8,21 @@
   font-size: 2.25rem;
 }
 
+.blog-header-title {
+  vertical-align: middle;
+  padding-left: 10px;
+}
+
 .blog-header-logo:hover {
   text-decoration: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+a:hover{
+  text-decoration: none;
 }
 
 .display-4 {

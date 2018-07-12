@@ -1,5 +1,5 @@
 const PassportLocalStrategy = require('passport-local').Strategy
-const usersData = require('../data/users')
+const db = require('../data/database')
 
 module.exports = new PassportLocalStrategy({
   usernameField: 'email',
@@ -14,12 +14,13 @@ module.exports = new PassportLocalStrategy({
     name: req.body.name.trim()
   }
 
-  const existingUser = usersData.findByEmail(email)
+  const existingUser = db.getUserByEmail(email)
   if (existingUser) {
     return done('E-mail already exists!')
   }
 
-  usersData.save(user)
+  db.addUser(user);
+  db.saveChanges();
 
   return done(null)
 })

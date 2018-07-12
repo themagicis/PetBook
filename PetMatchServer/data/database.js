@@ -5,7 +5,8 @@ const dbFile = "db\\pets.db"
 var db = {
     users: [],
     pets: [],
-    messages: []
+    messages: [],
+    roles: ['Admin','Moderator']
 }
 
 // class User {
@@ -33,8 +34,11 @@ module.exports = {
         user.id = id
         db.users.push(user)
     },
-    getUser: (id) => {
+    getUserById: (id) => {
         return db.users.find(u => u.id === id)
+    },
+    getUserByEmail: (email) => {
+        return db.users.find(u => u.email === email)
     },
     addPet: (pet) => {
         const id = db.pets.length + 1

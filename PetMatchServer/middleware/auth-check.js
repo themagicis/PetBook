@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const usersData = require('../data/users')
+const db = require('../data/database')
 
 module.exports = (req, res, next) => {
   if (!req.headers.authorization) {
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 
     const userId = decoded.sub
 
-    const user = usersData.findById(userId)
+    const user = db.getUserById(userId)
     if (!user) {
       return res.status(401).end()
     }

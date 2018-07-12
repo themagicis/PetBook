@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const usersData = require('../data/users')
+const db = require('../data/database')
 const PassportLocalStrategy = require('passport-local').Strategy
 
 module.exports = new PassportLocalStrategy({
@@ -13,7 +13,7 @@ module.exports = new PassportLocalStrategy({
     password: password.trim()
   }
 
-  let savedUser = usersData.findByEmail(email)
+  let savedUser = db.getUserByEmail(email)
 
   if (!savedUser) {
     const error = new Error('Incorrect email or password')
@@ -38,7 +38,11 @@ module.exports = new PassportLocalStrategy({
   // create a token string
   const token = jwt.sign(payload, 's0m3 r4nd0m str1ng')
   const data = {
-    name: savedUser.name
+    id: savedUser.id,
+    name: savedUser.name,
+    picture: savedUser.picture,
+    roles: ['Admin'],
+    pets: []
   }
 
   return done(null, token, data)

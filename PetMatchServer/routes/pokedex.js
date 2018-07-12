@@ -2,22 +2,22 @@ const express = require('express')
 const authCheck = require('./../middleware/auth-check')
 const router = new express.Router()
 
-const pokemons = require('./../data/pokemons')
+//const pokemons = require('./../data/pokemons')
 
 router.use(authCheck)
 
 router.post('/create',(req,res,next)=>{
 
-    pokemons.addPokem((req.body))
+    //pokemons.addPokem((req.body))
 
 })
 
 router.get('/pokedex',(req,res,next)=>{
     console.log('geting')
-    console.log(pokemons.retrivePokemons())
-    let pokemonColection = (pokemons.retrivePokemons())
+    //console.log(pokemons.retrivePokemons())
+    //let pokemonColection = (pokemons.retrivePokemons())
     return res.status(200).json({
-        pokemonColection
+        //pokemonColection
     })
 })
 
