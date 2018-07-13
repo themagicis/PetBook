@@ -138,3 +138,19 @@ a:hover{
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.pet-image{
+  width: 200px;
+  height: 200px;
+  float: left;
+  margin: 5px;
+}
+
+.react-date-picker__button{
+  border: none !important;
+  width: 100%;
+}
+
+.react-date-picker{
+  z-index: 99;
+}

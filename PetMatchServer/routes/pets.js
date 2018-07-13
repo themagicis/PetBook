@@ -11,4 +11,11 @@ router.get('/getAll',(req,res,next)=>{
     return res.status(200).json(pets)
 })
 
+router.post('/add',(req,res,next)=>{
+    req.body.ownerId = 2; //req.user.id;
+    db.addPet(req.body);
+    db.saveChanges();
+    res.status(200).json(req.body)
+})
+
 module.exports = router

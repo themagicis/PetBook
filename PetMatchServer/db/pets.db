@@ -1,1 +1,1 @@
-{"users":[{"name":"Pesho","id":1},{"email":"test@test.com","password":"12345678","name":"nikola","id":2}],"pets":[],"messages":[]}
+{"users":[{"name":"Pesho","id":1},{"email":"test@test.com","password":"12345678","name":"nikola","id":2}],"pets":[{"name":"Benji","kind":"1","breed":"1","sex":"1","birthDate":"2018-07-13T07:15:48.961Z","lat":42.69770819999999,"lng":23.321867500000053,"address":"Sofia, Bulgaria","picture":"","pictures":["http://myhswm.org/images/sized/images/animals/Smith_New_Profile_Picture_-256x256.JPG"],"ownerId":2,"id":1}],"messages":[]}

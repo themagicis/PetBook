@@ -37,12 +37,21 @@ module.exports = new PassportLocalStrategy({
 
   // create a token string
   const token = jwt.sign(payload, 's0m3 r4nd0m str1ng')
+
+  const pets = db.getPets(savedUser.id).map(p => { 
+    return { 
+      id: p.id, 
+      name: p.name, 
+      picture: p.pictures[0]
+    }
+  })
+  
   const data = {
     id: savedUser.id,
     name: savedUser.name,
     picture: savedUser.picture,
     roles: ['Admin'],
-    pets: []
+    pets: pets
   }
 
   return done(null, token, data)

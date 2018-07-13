@@ -73,11 +73,11 @@ class Header extends Component {
             </Link>;
         let rightContent = isAuthenticated ? <CircleImage url={this.props.user.url} size={50} /> : '' ;
         let pets = isAuthenticated ? this.props.user.info.pets.map(p => 
-            <Link key={p.id} to={'/mypet/' + p.id}>
+            <Link key={p.id} to={'/pet/profile/' + p.id}>
                 <CircleImage url={p.picture} size={50} /> &nbsp;
             </Link>) : '';
         let addPetBtn = isAuthenticated ? 
-            <Link to={'/addpet/'}>
+            <Link to={'/pet/add'}>
                 <CircleImage url={'https://frpnet.net/wp-content/uploads/2017/05/roots-of-insanity-6.png'} size={50} />
             </Link> : '' ;
         let error = this.state.error ? 
@@ -97,10 +97,10 @@ class Header extends Component {
                         {addPetBtn}
                     </div>
                     <div className="col-4 text-center">
-                        <a className="blog-header-logo text-dark" href="/">
+                        <Link className="blog-header-logo text-dark" to="/">
                             <img src={logo} alt="Logo" width="50" height="50"/>
                             <span className="blog-header-title">PetBook</span>
-                        </a>
+                        </Link>
                     </div>
                     <div className="col-4 d-flex justify-content-end align-items-center">
                         {rightContent}{btnRegister}
