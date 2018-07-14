@@ -58,10 +58,6 @@ class UserStore {
         ]
     };
 
-    @computed get hasPets() {
-        return this.info.pets.length > 0;
-    }
-
     @computed get isAuthenticated() {
         return this.info.id !== 0;
     }
