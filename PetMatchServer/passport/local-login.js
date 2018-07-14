@@ -50,7 +50,7 @@ module.exports = new PassportLocalStrategy({
     id: savedUser.id,
     name: savedUser.name,
     picture: savedUser.picture,
-    roles: ['Admin'],
+    roles: savedUser.roles,
     pets: pets
   }
 

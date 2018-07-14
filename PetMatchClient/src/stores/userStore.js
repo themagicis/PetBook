@@ -6,6 +6,7 @@ let defaultInfo = {
     name: '',
     picture: '',
     roles: [],
+    pets: []
 }
 
 class UserStore {
@@ -21,12 +22,25 @@ class UserStore {
 
     @action setInfo = info => {
         Object.assign(this.info, info);
-        localStorage.setItem(UserStore.key, JSON.stringify(info));
+        localStorage.setItem(UserStore.key, JSON.stringify(this.info));
     }
 
     @action clearInfo = () => {
         Object.assign(this.info, defaultInfo);
         localStorage.removeItem(UserStore.key);
+    }
+
+    getInfo = () =>{
+        var info = localStorage.getItem(UserStore.key);
+        if (info){
+            return JSON.parse(info)
+        }
+        return null;
+    }
+
+    @action addPet = pet => {
+        this.info.pets.push(pet);
+        localStorage.setItem(UserStore.key, JSON.stringify(this.info));
     }
 
     @observable info = {
@@ -50,6 +64,10 @@ class UserStore {
 
     @computed get isAuthenticated() {
         return this.info.id !== 0;
+    }
+
+    @computed get isAdmin(){
+        return this.info.roles.indexOf('Admin') >= 0;
     }
 }
 

@@ -6,6 +6,7 @@ var db = {
     users: [],
     pets: [],
     messages: [],
+    reports: [],
     roles: ['Admin','Moderator']
 }
 
@@ -51,6 +52,9 @@ module.exports = {
     getPets: (userId) =>{
         return db.pets.filter(p => p.ownerId === userId)
     },
+    getPetsByKind: (kindId) =>{
+        return db.pets.filter(p => p.kind === kindId)
+    },
     addMessage: (msg) =>{
         const id = db.messages.length + 1
         msg.id = id
@@ -58,6 +62,17 @@ module.exports = {
     },
     getPetMessages: (id) => {
         return db.pets.find(p => p.id === id)
+    },
+    addReport: (report) => {
+        const id = db.reports.length + 1
+        report.id = id
+        db.reports.push(report)
+    },
+    getReports: () =>{
+        return db.reports;
+    },
+    getTopPets: () =>{
+        return db.pets.sort((a, b) => a.id > b.id).slice(0, 5);
     },
     saveChanges: () => {
         var data = JSON.stringify(db);

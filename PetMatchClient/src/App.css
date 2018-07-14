@@ -129,7 +129,7 @@ a:hover{
  * Footer
  */
 .blog-footer {
-  padding: 2.5rem 0;
+  padding: 1.5rem 0;
   color: #999;
   text-align: center;
   background-color: #f9f9f9;
@@ -153,4 +153,33 @@ a:hover{
 
 .react-date-picker{
   z-index: 99;
+}
+
+.card-block {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+#map{
+  height: 200px;
+}
+
+#carouselExampleIndicators{
+  margin: auto;
+  width: 50%;
+}
+
+.carousel-control-prev,.carousel-control-next{
+  cursor: pointer;
+}
+
+.form-group-sex{
+  width: 100%
+}
+
+.form-group-sex label{
+  width:50%
 }

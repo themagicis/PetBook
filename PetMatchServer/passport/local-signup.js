@@ -11,7 +11,8 @@ module.exports = new PassportLocalStrategy({
   const user = {
     email: email.trim(),
     password: password.trim(),
-    name: req.body.name.trim()
+    name: req.body.name.trim(),
+    picture: req.body.picture.trim()
   }
 
   const existingUser = db.getUserByEmail(email)

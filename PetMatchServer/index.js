@@ -6,6 +6,8 @@ const localSignupStrategy = require('./passport/local-signup')
 const localLoginStrategy = require('./passport/local-login')
 const authRoutes = require('./routes/auth')
 const petsRoute = require('./routes/pets')
+const petsAuthRoute = require('./routes/petsAuth')
+const adminRoutes = require('./routes/admin')
 const db = require('./data/database')
 
 const app = express()
@@ -22,7 +24,9 @@ passport.use('local-login', localLoginStrategy)
 
 // routes
 app.use('/auth', authRoutes)
-app.use('/pets', petsRoute)
+app.use('/pub/pets', petsRoute)
+app.use('/pets', petsAuthRoute)
+app.use('/admin', adminRoutes)
 
 db.init();
 

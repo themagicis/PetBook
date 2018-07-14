@@ -51,6 +51,7 @@ class Header extends Component {
                     ...resp.user,
                     token: resp.token,
                 })
+                window.toastr.success(resp.message);
             } else{
                 this.setState({error:resp.message});
             }
@@ -68,12 +69,12 @@ class Header extends Component {
             <Button outline color="secondary" onClick={this.logout}>Log out</Button> :
             <Button outline color="success" onClick={this.toggle}>Log in</Button>
         let btnRegister = isAuthenticated ? '' : 
-            <Link to={'/register/'}>
+            <Link to={'/register'}>
                 <Button outline color="info" onClick={this.register}>Register</Button>
             </Link>;
-        let rightContent = isAuthenticated ? <CircleImage url={this.props.user.url} size={50} /> : '' ;
+        let rightContent = isAuthenticated ? <CircleImage url={this.props.user.info.picture} size={50} /> : '' ;
         let pets = isAuthenticated ? this.props.user.info.pets.map(p => 
-            <Link key={p.id} to={'/pet/profile/' + p.id}>
+            <Link key={p.id} to={'/pet/' + p.id}>
                 <CircleImage url={p.picture} size={50} /> &nbsp;
             </Link>) : '';
         let addPetBtn = isAuthenticated ? 
