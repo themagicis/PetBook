@@ -22,7 +22,6 @@ import Register from './components/Register'
 
 import UserStore from './stores/userStore';
 let userStore = new UserStore();
-window.UserStore = userStore;
 
 class App extends Component {
   render() {
@@ -45,10 +44,10 @@ class App extends Component {
             <Route path="/category/:category" component={SearchCategory} />
             <Route path="/register" component={Register} />
 
-            <PrivateRoute path="/pet/add" component={AddPet} />
-            <PrivateRoute path="/pet/:id(\d+)" component={PetProfile} />
+            <PrivateRoute path="/pet/add" component={AddPet} user={userStore} />
+            <PrivateRoute path="/pet/:id(\d+)" component={PetProfile} user={userStore}  />
             
-            <AdminRoute path="/admin" component={AdminPanel} />
+            <AdminRoute path="/admin" component={AdminPanel} user={userStore} />
 
             <Footer />
           </div>

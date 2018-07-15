@@ -1,12 +1,16 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 
-const AdminRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    window.UserStore.isAuthenticated && window.UserStore.isAdmin
-      ? <Component {...props} />
-      : <Redirect to='/' />
-  )} />
-)
+function AdminRoute ({component: Component, user, ...rest}) {
+  return (
+    <Route
+      {...rest}
+      render={(props) => 
+        user.isAuthenticated && user.isAdmin
+          ? <Component {...props} />
+          : <Redirect to={{pathname: '/', state: {from: props.location}}} />}
+    />
+  )
+}
 
 export default AdminRoute
