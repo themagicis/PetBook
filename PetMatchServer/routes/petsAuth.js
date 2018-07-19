@@ -8,12 +8,16 @@ router.use(authCheck)
 
 router.get('/get/:id',(req,res,next)=>{
     let pet = db.getPet(parseInt(req.params.id));
-    let owner = db.getUserById(pet.ownerId);
-    pet.owner = {
-        name: owner.name,
-        picture: owner.picture
+    if (pet){
+        let owner = db.getUserById(pet.ownerId);
+        pet.owner = {
+            name: owner.name,
+            picture: owner.picture
+        }
+        return res.status(200).json(pet)
+    } else{
+        return res.status(404);
     }
-    return res.status(200).json(pet)
 })
 
 router.post('/add',(req,res,next)=>{
