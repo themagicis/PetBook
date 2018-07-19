@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {inject} from 'mobx-react'
 
 @inject("api")
@@ -51,13 +52,13 @@ class Home extends Component{
              <div className="carousel-item active">
                 <img className="d-block w-100" src={this.state.pets[this.state.currentIndex].picture} alt="First slide"/>
                 <div className="carousel-caption d-none d-md-block">
-                    <h3>{this.state.pets[this.state.currentIndex].name}</h3>
+                    <h3><Link to={'/pet/' + this.state.pets[this.state.currentIndex].id}>{this.state.pets[this.state.currentIndex].name}</Link></h3>
                     <p>{this.state.pets[this.state.currentIndex].description}</p>
                 </div>
             </div> : ''
         return (
             <div className="container">
-                <h3 className="text-center">Our most-loved pets</h3>
+                <h3 className="text-center">Meet with our top rated pets</h3>
                 <div className="col-12 bg-light mb-3 rounded">
                     <div id="carouselExampleIndicators" className="carousel slide">
                         <ol className="carousel-indicators">

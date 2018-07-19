@@ -14,6 +14,7 @@ module.exports = new PassportLocalStrategy({
   }
 
   let savedUser = db.getUserByEmail(email)
+  console.log(savedUser);
 
   if (!savedUser) {
     const error = new Error('Incorrect email or password')

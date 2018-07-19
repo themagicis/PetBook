@@ -14,10 +14,9 @@ router.get('/get/:id',(req,res,next)=>{
             name: owner.name,
             picture: owner.picture
         }
-        return res.status(200).json(pet)
-    } else{
-        return res.status(404);
-    }
+    } 
+    
+    return res.status(200).json({success:!!pet, pet})
 })
 
 router.post('/add',(req,res,next)=>{

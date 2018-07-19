@@ -26,7 +26,8 @@ export default class PetProfile extends Component{
             owner: {
                 name: '',
                 picture: ''
-            }
+            },
+            error: ''
         };
 
         this.petsSvc = this.props.api.pets;
@@ -36,7 +37,7 @@ export default class PetProfile extends Component{
     }
 
     componentDidMount(){
-        this.map = new window.google.maps.Map(this.mapRef.current, {
+        this.map = new window.google.maps.Map(document.getElementById("map"), {
             center: {lat: -34.397, lng: 150.644},
             zoom: 10
           });
@@ -51,14 +52,21 @@ export default class PetProfile extends Component{
 
     fetchPet(){
         this.petsSvc.getById(this.props.match.params.id).then(resp =>{
-            this.setState({...resp});
-            if (resp.lat && resp.lng){
-                var pos = {
-                    lat: resp.lat,
-                    lng: resp.lng
-                  };
-                this.map.setCenter(pos);
+            if (resp.success){
+                this.setState({...resp.pet});
+                this.setState({error: ''});
+                if (resp.pet.lat && resp.pet.lng){
+                    var pos = {
+                        lat: resp.pet.lat,
+                        lng: resp.pet.lng
+                    };
+                    this.map.setCenter(pos);
+                }
+            } else {
+                this.setState({error: 'This pet does not exist. Please contact the support.' });
             }
+        }, err =>{
+            debugger;
         })
     }
 
@@ -202,7 +210,7 @@ export default class PetProfile extends Component{
                             <div className="card-block">
                                 <div className="row">
                                     <div className="col-12">
-                                        <div ref={this.mapRef}></div>
+                                        <div id="map" ref={this.mapRef}></div>
                                     </div>
                                 </div>
                             </div>
@@ -215,12 +223,6 @@ export default class PetProfile extends Component{
                             <div className="card-block">
                                 <div className="row">
                                     <div className="col-12">
-                                        <button className="btn btn-outline-success">Like</button>
-                                        &nbsp;
-                                        <button className="btn btn-outline-info">Edit</button>
-                                        &nbsp;
-                                        <button className="btn btn-outline-warning">Hide</button>
-                                        &nbsp;
                                         <button className="btn btn-outline-danger" onClick={this.report}>Report</button>
                                     </div>
                                 </div>

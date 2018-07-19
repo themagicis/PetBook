@@ -13,6 +13,7 @@ router.get('/getTop/',(req,res,next)=>{
     let petsDb = db.getTopPets();
     let pets = petsDb.map(p => {
         return {
+            id: p.id,
             name: p.name,
             description: p.description,
             picture: p.pictures[0]

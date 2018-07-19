@@ -7,27 +7,8 @@ var db = {
     pets: [],
     messages: [],
     reports: [],
-    roles: ['Admin','Moderator']
+    roles: ['Admin']
 }
-
-// class User {
-    // id
-//     name;
-//     email;
-//     password;
-//     picture;
-// }
-
-// class Pet {
-//     id
-//     ownerId
-//     name;
-//     kind;
-//     breed;
-//     sex;
-//     birthDate;
-//     pictures;
-// }
 
 module.exports = {
     addUser: (user) => {
@@ -91,7 +72,8 @@ module.exports = {
     init: () => {
         fs.readFile(dbFile, (err, data) => {
             if (err) {
-                return console.error(err);
+                var data = JSON.stringify(db);
+                fs.writeFile(dbFile, data, (err) =>{});
             }
             db = JSON.parse(data.toString());
         });
