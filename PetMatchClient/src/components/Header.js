@@ -5,11 +5,9 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'react
 import logo from '../logo.png'
 import {inject, observer} from 'mobx-react'
 
-import authService from '../services/authService'
-
 import CircleImage from './common/CircleImage'
 
-@inject("user")
+@inject("user", "api")
 @observer
 class Header extends Component {
     constructor(props) {
@@ -17,6 +15,7 @@ class Header extends Component {
         this.state = {
           modal: false
         };
+        this.authSvc = this.props.api.auth;
     
         this.toggle = this.toggle.bind(this);
         this.login = this.login.bind(this);
@@ -44,7 +43,7 @@ class Header extends Component {
 
     login(){
         this.setState({error:''});
-        authService.login(this.state.email, this.state.password).then(resp =>{
+        this.authSvc.login(this.state.email, this.state.password).then(resp =>{
             if (resp.success){
                 this.toggle();
                 this.props.user.setInfo({

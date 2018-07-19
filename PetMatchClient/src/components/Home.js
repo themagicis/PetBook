@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
+import {inject} from 'mobx-react'
 
-import petService from '../services/petService'
-
+@inject("api")
 class Home extends Component{
     constructor(props){
         super(props);
@@ -10,10 +10,11 @@ class Home extends Component{
             currentIndex: 0,
             pets: []
         }
+        this.petsSvc = this.props.api.pets;
     }
 
     componentDidMount(){
-        petService.getTop().then(resp =>{
+        this.petsSvc.getTop().then(resp =>{
             this.setState({
                 pets: resp
             })

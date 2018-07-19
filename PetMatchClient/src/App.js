@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch} from 'react-router-dom';
 import {Provider} from 'mobx-react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'toastr/build/toastr.min.css';
 import './App.css';
 
-import PrivateRoute from './components/common/PrivateRoute'
-import AdminRoute from './components/common/AdminRoute'
+import PublicRoute from './components/routing/PublicRoute'
+import PrivateRoute from './components/routing/PrivateRoute'
+import AdminRoute from './components/routing/AdminRoute'
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -17,16 +18,25 @@ import Home from './components/Home';
 import AddPet from './components/AddPet'
 import PetProfile from './components/PetProfile'
 import SearchCategory from './components/SearchCategory'
-import AdminPanel from './components/AdminPanel'
+import AdminPanel from './components/admin/AdminPanel'
 import Register from './components/Register'
+import NotFound from './components/NotFound'
 
-import UserStore from './stores/userStore';
-let userStore = new UserStore();
+import UserStore from './stores/UserStore';
+import ApiStore from './stores/ApiStore';
+
+import HttpBackend from './services/HttpBackend'
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.userStore = new UserStore();
+    this.apiStore = new ApiStore(new HttpBackend(this.userStore));
+  }
+
   render() {
     return (
-      <Provider user={userStore}>
+      <Provider user={this.userStore} api={this.apiStore}>
         <Router>
           <div>
             <div className="container">
@@ -40,15 +50,19 @@ class App extends Component {
                 </div>
             </div>
             
-            <Route exact path="/" component={Home} />
-            <Route path="/category/:category" component={SearchCategory} />
-            <Route path="/register" component={Register} />
+            <Switch>
+              <PublicRoute exact path="/" component={Home} />
+              <PublicRoute path="/category/:category" component={SearchCategory} />
+              <PublicRoute path="/register" component={Register} />
 
-            <PrivateRoute path="/pet/add" component={AddPet} user={userStore} />
-            <PrivateRoute path="/pet/:id(\d+)" component={PetProfile} user={userStore}  />
+              <PrivateRoute path="/pet/add" component={AddPet} user={this.userStore} />
+              <PrivateRoute path="/pet/:id(\d+)" component={PetProfile} user={this.userStore}  />
+              
+              <AdminRoute path="/admin" component={AdminPanel} user={this.userStore} />
+
+              <PublicRoute component={NotFound} />
+            </Switch>
             
-            <AdminRoute path="/admin" component={AdminPanel} user={userStore} />
-
             <Footer />
           </div>
         </Router>

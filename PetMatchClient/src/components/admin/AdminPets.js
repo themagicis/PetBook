@@ -1,36 +1,29 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import {inject} from 'mobx-react'
 
-import adminService from '../services/adminService'
-
-export default class AdminReports extends Component{
+@inject("api")
+export default class AdminPets extends Component{
     constructor(props){
         super(props);
         this.state = {
-            reports: []
+            pets: []
         }
     }
 
     componentDidMount(){
-        adminService.getReports().then(resp =>{
-            this.setState({reports:resp});
+        this.props.api.admin.getPets().then(resp =>{
+            this.setState({pets:resp});
         });
     }
 
     render(){
-        let reports = this.state.reports.map(r => {
+        let pets = this.state.pets.map(r => {
             return (
                 <tr key={r.id}>
                     <td>{r.id}</td>
-                    <td>{r.reportedBy}</td>
+                    <td>{r.name}</td>
                     <td><Link to={'/pet/' + r.id}>View profile</Link></td>
-                    <td>{new Intl.DateTimeFormat('en-GB', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                            }).format(new Date(r.reportedDate))}</td>
                     <td>
                         <button className="btn btn-sm btn-primary">Lock</button>
                     </td>
@@ -42,17 +35,15 @@ export default class AdminReports extends Component{
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Repored By</th>
-                        <th scope="col">Pet</th>
-                        <th scope="col">Date Reported</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Profile</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {reports}
+                    {pets}
                 </tbody>
             </table>
-
         )
     }
 }

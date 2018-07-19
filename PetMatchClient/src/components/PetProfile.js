@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import {inject} from 'mobx-react'
 
-import petService from '../services/petService'
 import {PetTypes} from '../config'
 
 import CircleImage from './common/CircleImage'
+import PetSex from './common/PetSex'
+import PetBreed from './common/PetBreed'
 
+@inject("api")
 export default class PetProfile extends Component{
     map = null;
 
@@ -26,11 +29,14 @@ export default class PetProfile extends Component{
             }
         };
 
+        this.petsSvc = this.props.api.pets;
+
         this.report = this.report.bind(this);
+        this.mapRef = React.createRef();
     }
 
     componentDidMount(){
-        this.map = new window.google.maps.Map(document.getElementById('map'), {
+        this.map = new window.google.maps.Map(this.mapRef.current, {
             center: {lat: -34.397, lng: 150.644},
             zoom: 10
           });
@@ -44,7 +50,7 @@ export default class PetProfile extends Component{
     }
 
     fetchPet(){
-        petService.getById(this.props.match.params.id).then(resp =>{
+        this.petsSvc.getById(this.props.match.params.id).then(resp =>{
             this.setState({...resp});
             if (resp.lat && resp.lng){
                 var pos = {
@@ -70,7 +76,7 @@ export default class PetProfile extends Component{
     }
 
     report(){
-        petService.report(this.state.id).then(reps => {
+        this.petsSvc.report(this.state.id).then(reps => {
             window.toastr.success('Thank you for your feedback!');
         });
     }
@@ -107,7 +113,7 @@ export default class PetProfile extends Component{
                                         <h4>Sex:</h4>
                                     </div>
                                     <div className="col-8">
-                                        <h4>{this.state.sex === '1' ? 'Male' : 'Female'}</h4>
+                                        <h4><PetSex sex={this.state.sex}/></h4>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -115,7 +121,7 @@ export default class PetProfile extends Component{
                                         <h4>Breed:</h4>
                                     </div>
                                     <div className="col-8">
-                                        <h4>{this.getPetBreed(this.state.kind, this.state.breed)}</h4>
+                                        <h4><PetBreed typeId={this.state.kind} breedId={this.state.breed} /></h4>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -196,7 +202,7 @@ export default class PetProfile extends Component{
                             <div className="card-block">
                                 <div className="row">
                                     <div className="col-12">
-                                        <div id="map"></div>
+                                        <div ref={this.mapRef}></div>
                                     </div>
                                 </div>
                             </div>

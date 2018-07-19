@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {inject} from 'mobx-react'
 
 import {PetTypes} from '../config'
-import petService from '../services/petService'
 
+import PetCard from './PetCard'
+
+@inject("api")
 export default class SearchCategory extends Component{
     constructor(props){
         super(props);
@@ -16,6 +18,8 @@ export default class SearchCategory extends Component{
             currentSex: '0',
             selectedSex: '0'
         }
+
+        this.petsSvc = this.props.api.pets;
 
         this.handleBreed = this.handleBreed.bind(this);
         this.handleSex = this.handleSex.bind(this);
@@ -37,19 +41,11 @@ export default class SearchCategory extends Component{
         this.setState({
             breeds: type.breeds
         })
-        petService.getByCategory(type.id).then(resp =>{
+        this.petsSvc.getByCategory(type.id).then(resp =>{
             this.setState({
                 pets: resp
             })
         })
-    }
-
-    getPetBreed(typeId, breedId){
-        typeId = parseInt(typeId, 10);
-        breedId = parseInt(breedId, 10);
-        var type = PetTypes.find(t => t.id === typeId);
-        var breed = type.breeds.find(b => b.id === breedId);
-        return breed.name;
     }
 
     handleBreed(ev){
@@ -79,24 +75,10 @@ export default class SearchCategory extends Component{
         })
         let filtered = this.state.pets.filter(p => (this.state.currentBreed === '0' || p.breed === this.state.currentBreed) && (this.state.currentSex === '0' || p.sex === this.state.currentSex))
         let pets = filtered.length > 0 ?
-            filtered.map(p => 
-                <div className="col-md-6" key={p.id}>
-                    <div className="card flex-md-row mb-4 box-shadow h-md-250">
-                    <div className="card-body d-flex flex-column align-items-start">
-                        <strong className="d-inline-block mb-2 text-primary">{this.getPetBreed(p.kind, p.breed)}</strong>
-                        <h3 className="mb-0">
-                            <Link className="text-dark" to={'/pet/' + p.id}>{p.name}</Link>
-                        </h3>
-                        <div className="mb-1 text-muted">{p.sex === '1' ? 'Male' : 'Female'}</div>
-                        <p className="card-text mb-auto">{p.description}</p>
-                        <Link to={'/pet/' + p.id}>See profile</Link>
-                    </div>
-                    <img className="card-img-right flex-auto d-none d-md-block" src={p.pictures[0]} alt={p.name} width="200" height="250" />
-                    </div>
-                </div>) :
-                <div className="col-md-6">
-                    <h3>Sorry, no pets matched your criteria.</h3>
-                </div>
+            filtered.map(p => <PetCard key={p.id} pet={p} />) :
+            <div className="col-md-6">
+                <h3>Sorry, no pets matched your criteria.</h3>
+            </div>
         return (
             <div className="container">
                 <form>

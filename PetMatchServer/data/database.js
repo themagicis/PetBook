@@ -41,6 +41,9 @@ module.exports = {
     getUserByEmail: (email) => {
         return db.users.find(u => u.email === email)
     },
+    getAllUsers: () =>{
+        return db.users;
+    },
     addPet: (pet) => {
         const id = db.pets.length + 1
         pet.id = id
@@ -54,6 +57,9 @@ module.exports = {
     },
     getPetsByKind: (kindId) =>{
         return db.pets.filter(p => p.kind === kindId)
+    },
+    getAllPets: () =>{
+        return db.pets;
     },
     addMessage: (msg) =>{
         const id = db.messages.length + 1

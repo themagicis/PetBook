@@ -1,21 +1,27 @@
-import {doPost,doGet} from './requestHelper'
+class PetService  {
+    constructor(http){
+        this.http = http;
+    }
 
-let petService = {
     add(pet){
-        return doPost('pets/add', pet);
-    },
+        return this.http.doPost('pets/add', pet);
+    }
+
     getById(id){
-        return doGet('pets/get/' + id);
-    },
-    getByCategory(categoryId){
-        return doGet('pub/pets/category/' + categoryId);
-    },
+        return this.http.doGet('pets/get/' + id);
+    }
+
     report(petId){
-        return doPost('pets/report', { petId });
-    },
+        return this.http.doPost('pets/report', { petId });
+    }
+
+    getByCategory(categoryId){
+        return this.http.doGet('pub/pets/category/' + categoryId);
+    }
+
     getTop(){
-        return doGet('pub/pets/getTop/');
+        return this.http.doGet('pub/pets/getTop/');
     }
 }
 
-export default petService;
+export default PetService;

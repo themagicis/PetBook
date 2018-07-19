@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
+import {inject} from 'mobx-react'
 
-import authService from '../services/authService'
-
+@inject("api")
 export default class Register extends Component{
     constructor(props) {
         super(props);
         this.state = {
           modal: false
         };
+
+        this.authSvc = this.props.api.auth;
     
         this.register = this.register.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -29,7 +31,7 @@ export default class Register extends Component{
     }
 
     register(){
-        authService.register(this.state.name, this.state.email, this.state.password, this.state.picture).then(resp =>{
+        this.authSvc.register(this.state.name, this.state.email, this.state.password, this.state.picture).then(resp =>{
             if (resp.success){
                 window.toastr.success(resp.message);
                 this.props.history.push('/');

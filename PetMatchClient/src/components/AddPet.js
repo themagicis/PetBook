@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-date-picker';
 import { Alert } from 'reactstrap';
-
-import {inject, observer} from 'mobx-react'
+import {inject} from 'mobx-react'
 
 import {PetTypes} from '../config'
-import petService from '../services/petService'
+import AddressField from './AddressField'
 
-@inject("user")
-@observer
+@inject("user", 'api')
 class AddPet extends Component{
     constructor(props){
         super(props);
@@ -28,39 +26,17 @@ class AddPet extends Component{
             error: ''
         }
 
+        this.petsSvc = this.props.api.pets;
+
         this.handleChange = this.handleChange.bind(this);
         this.handleDob = this.handleDob.bind(this);
         this.handlAddPicture = this.handlAddPicture.bind(this);
         this.handleAddress = this.handleAddress.bind(this);
         this.save = this.save.bind(this);
-
-        this.addressRef = React.createRef();
-        this.autoComplete = null;
-        this.listener = null;
     }
 
-    componentDidMount(){
-        this.autoComplete = new window.google.maps.places.Autocomplete(this.addressRef.current);
-        this.listener = this.autoComplete.addListener('place_changed', this.handleAddress);
-    }
-
-    componentWillUnmount(){
-        window.google.maps.event.removeListener(this.listener);
-    }
-
-    handleAddress(){
-        var place = this.autoComplete.getPlace();
-            if (!place.geometry) {
-              // User entered the name of a Place that was not suggested and
-              // pressed the Enter key, or the Place Details request failed.
-              window.alert("No details available for input: '" + place.name + "'");
-              return;
-            }
-            this.setState({
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-                address: place.formatted_address
-            });
+    handleAddress(address){
+        this.setState(address);
     }
 
     handleChange(event) {
@@ -91,7 +67,7 @@ class AddPet extends Component{
             return;
         }
 
-        petService.add(this.state).then(resp =>{
+        this.petsSvc.add(this.state).then(resp =>{
             window.toastr.success('Saved!');
             var pet = {
                 id: resp.id,
@@ -197,7 +173,7 @@ class AddPet extends Component{
                         <div className="col-6">
                             <div className="form-group">
                                 <label htmlFor="email">Address*</label>
-                                <input ref={this.addressRef} type="text" className="form-control" id="address" name="address" placeholder="Address" autoComplete="off"/>
+                                <AddressField onChange={this.handleAddress} />
                             </div>
                         </div>
                     </div>
